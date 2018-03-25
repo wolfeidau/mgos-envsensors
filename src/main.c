@@ -2,7 +2,8 @@
 
 #include <mgos_i2c.h>
 #include <mgos_spi.h>
-#include "mgos_shadow.h"
+
+#include "mgos_aws_shadow.h"
 
 #include "mgos_bme680.h"
 #include "mgos_sgp30.h"
@@ -10,35 +11,30 @@
 
 static struct mgos_bme680 *s_bme680 = NULL;
 
-// static void aws_shadow_state_handler(void *arg, enum mgos_aws_shadow_event ev,
-//                                      uint64_t version,
-//                                      const struct mg_str reported,
-//                                      const struct mg_str desired,
-//                                      const struct mg_str reported_md,
-//                                      const struct mg_str desired_md) 
-// {
-//     LOG(LL_INFO, ("== Event: %d (%s), version: %llu", ev,
-//                 mgos_aws_shadow_event_name(ev), version));
-
-//     if (ev == MGOS_AWS_SHADOW_CONNECTED) {
-//         // report_state();
-//         return;
-//     }
-    
-//     if (ev != MGOS_AWS_SHADOW_GET_ACCEPTED &&
-//         ev != MGOS_AWS_SHADOW_UPDATE_DELTA) {
-//         return;
-//     }
-
-//     LOG(LL_INFO, ("Reported state: %.*s\n", (int) reported.len, reported.p));
-//     LOG(LL_INFO, ("Desired state : %.*s\n", (int) desired.len, desired.p));
-//     LOG(LL_INFO, ("Reported metadata: %.*s\n", (int) reported_md.len, reported_md.p));
-//     LOG(LL_INFO, ("Desired metadata : %.*s\n", (int) desired_md.len, desired_md.p));
-// }
-
-static void shadow_event_cb(int ev, void *ev_data, void *userdata)
+static void aws_shadow_state_handler(void *arg, enum mgos_aws_shadow_event ev,
+                                     uint64_t version,
+                                     const struct mg_str reported,
+                                     const struct mg_str desired,
+                                     const struct mg_str reported_md,
+                                     const struct mg_str desired_md)
 {
-    LOG(LL_INFO, ("Got system event %s", mgos_shadow_event_name(ev)));
+    LOG(LL_INFO, ("== Event: %d (%s), version: %llu", ev,
+                mgos_aws_shadow_event_name(ev), version));
+
+    if (ev == MGOS_AWS_SHADOW_CONNECTED) {
+        // report_state();
+        return;
+    }
+
+    if (ev != MGOS_AWS_SHADOW_GET_ACCEPTED &&
+        ev != MGOS_AWS_SHADOW_UPDATE_DELTA) {
+        return;
+    }
+
+    LOG(LL_INFO, ("Reported state: %.*s\n", (int) reported.len, reported.p));
+    LOG(LL_INFO, ("Desired state : %.*s\n", (int) desired.len, desired.p));
+    LOG(LL_INFO, ("Reported metadata: %.*s\n", (int) reported_md.len, reported_md.p));
+    LOG(LL_INFO, ("Desired metadata : %.*s\n", (int) desired_md.len, desired_md.p));
 }
 
 static void iot_timer_cb(void *arg) 
@@ -70,11 +66,9 @@ enum mgos_app_init_result mgos_app_init(void)
     if ((s_bme680 = mgos_bme680_i2c_create(0x77)) == NULL) return MGOS_APP_INIT_ERROR;
     if (!mgos_sgp30_setup()) return MGOS_APP_INIT_ERROR;
 
-    mgos_set_timer(2000 /* ms */, true /* repeat */, iot_timer_cb, NULL);
+    mgos_set_timer(20000 /* ms */, true /* repeat */, iot_timer_cb, NULL);
 
-    // mgos_aws_shadow_set_state_handler(aws_shadow_state_handler, NULL);
-
-    mgos_event_add_handler(MGOS_SHADOW_BASE, shadow_event_cb, NULL);
+    mgos_aws_shadow_set_state_handler(aws_shadow_state_handler, NULL);
 
     return MGOS_APP_INIT_SUCCESS;
 }
