@@ -7,6 +7,13 @@
 
 #include "bme680.h"
 
+const double MGOS_BME680_ERROR = -128.0;
+
+bool mgos_bme680_init()
+{
+    return true;
+}
+
 int8_t user_spi_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
     // int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
@@ -297,57 +304,6 @@ int8_t mgos_bme680_read(struct mgos_bme680* bme, struct mgos_bme680_data* data)
 #endif /* BME680_FLOAT_POINT_COMPENSATION */
     }
     return rslt;
-}
-
-double mgos_bme680_read_temperature(struct mgos_bme680* bme)
-{
-    if (NULL == bme) {
-        return MGOS_BME680_ERROR;
-    }
-    struct mgos_bme680_data data;
-    int8_t rslt = mgos_bme680_read(bme, &data);
-    double result;
-
-    if (BME680_OK == rslt) {
-        result = data.temp;
-    } else {
-        result = MGOS_BME680_ERROR;
-    }
-    return result;
-}
-
-double mgos_bme680_read_pressure(struct mgos_bme680* bme)
-{
-    if (NULL == bme) {
-        return MGOS_BME680_ERROR;
-    }
-    struct mgos_bme680_data data;
-    int8_t rslt = mgos_bme680_read(bme, &data);
-    double result;
-
-    if (BME680_OK == rslt) {
-        result = data.press;
-    } else {
-        result = MGOS_BME680_ERROR;
-    }
-    return result;
-}
-
-double mgos_bme680_read_humidity(struct mgos_bme680* bme)
-{
-    if (NULL == bme) {
-        return MGOS_BME680_ERROR;
-    }
-    struct mgos_bme680_data data;
-    int8_t rslt = mgos_bme680_read(bme, &data);
-    double result;
-
-    if (BME680_OK == rslt) {
-        result = data.humid;
-    } else {
-        result = MGOS_BME680_ERROR;
-    }
-    return result;
 }
 
 void mgos_bme680_delete(struct mgos_bme680* bme)

@@ -7,6 +7,8 @@
 #include "sensirion_common.h"
 #include "sgp30.h"
 
+const int MGOS_SGP30_ERROR = -128;
+
 void sensirion_i2c_init() {}
 
 int8_t sensirion_i2c_read(uint8_t address, uint8_t* data, uint16_t count)
@@ -96,12 +98,24 @@ int8_t mgos_sgp30_read(struct mgos_sgp30_data* data)
     return 0;
 }
 
-int mgos_sgp30_read_tvoc(void)
+struct mgos_sgp30_data* mgos_sgp30_data_create()
 {
-    return 0;
+    return calloc(1, sizeof (struct mgos_sgp30_data));
 }
 
-int mgos_sgp30_read_co2(void)
+void mgos_sgp30_data_delete(struct mgos_sgp30_data* data)
 {
-    return 0;
+    if (NULL != data) {
+        free(data);
+    }
+}
+
+int mgos_sgp30_data_get_tvoc(const struct mgos_sgp30_data* data)
+{
+    return (NULL != data) ? data->tvoc : MGOS_SGP30_ERROR;
+}
+
+int mgos_sgp30_data_get_co2(const struct mgos_sgp30_data* data)
+{
+    return (NULL != data) ? data->co2 : MGOS_SGP30_ERROR;
 }
