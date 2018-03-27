@@ -25,6 +25,7 @@ includes:
 # List of dirs. Files from these dirs will be copied to the device filesystem
 filesystem:
   - fs
+  - mjs_fs
 
 # List of libraries used by this app, in order of initialisation
 libs:
@@ -39,6 +40,7 @@ libs:
   - origin: https://github.com/mongoose-os-libs/i2c
   - origin: https://github.com/mongoose-os-libs/sntp
   - origin: https://github.com/mongoose-os-libs/shadow  
+  - origin: https://github.com/mongoose-os-libs/mjs
 
 config_schema:
   - ["i2c.enable", true]
