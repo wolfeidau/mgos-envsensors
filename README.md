@@ -4,5 +4,5 @@ This application demonstrates the use of the Bosch [BME680](https://www.bosch-se
 
 # license
 
-
+This code is released under Apache License 2.0, and is copyright Mark Wolfe.
 
