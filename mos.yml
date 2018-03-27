@@ -2,9 +2,9 @@ author: Mark Wolfe <mark@wolfe.id.au>
 description: An Environment Sensors IoT Board
 version: 1.0
 
-libs_version: ${mos.version}
-modules_version: ${mos.version}
-mongoose_os_version: ${mos.version}
+# libs_version: ${mos.version}
+# modules_version: ${mos.version}
+# mongoose_os_version: ${mos.version}
 
 platform: esp32
 
@@ -17,15 +17,10 @@ tags:
 # List of files / directories with C sources. No slashes at the end of dir names.
 sources:
   - src
-  - src/BME680_driver
-  - src/SGP30_driver
-includes:
-  - include
 
 # List of dirs. Files from these dirs will be copied to the device filesystem
 filesystem:
   - fs
-  - mjs_fs
 
 # List of libraries used by this app, in order of initialisation
 libs:
@@ -41,6 +36,10 @@ libs:
   - origin: https://github.com/mongoose-os-libs/sntp
   - origin: https://github.com/mongoose-os-libs/shadow  
   - origin: https://github.com/mongoose-os-libs/mjs
+  - origin: https://github.com/wolfeidau/mgos-sgp30 
+    name: sgp30
+  - origin: https://github.com/wolfeidau/mgos-bme680
+    name: bme680
 
 config_schema:
   - ["i2c.enable", true]

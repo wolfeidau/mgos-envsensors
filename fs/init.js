@@ -5,7 +5,7 @@ load('api_config.js');
 load('api_timer.js');
 load('api_sys.js');
 
-let bme = BME680.createI2C(0x77);
+let bme = BME680.createI2C(Cfg.get('breakout.bme680_address'));
 let bmeData = BME680Data.create();
 let sgpData = SGP30Data.create();
 
@@ -35,7 +35,7 @@ Timer.set(15000, Timer.REPEAT, function() {
         temp: bmeData.temp()/100,
         press: bmeData.press()/100,
         humid: bmeData.humid()/1024,
-        gas: bmeData.gas()/100,
+        gas: bmeData.gas(),
         tvoc: sgpData.tvoc(),
         co2: sgpData.co2(),
         uptime: Sys.uptime()
