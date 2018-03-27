@@ -1,15 +1,8 @@
-# A blank Mongoose OS app
+# mgos-envsensors
 
-## Overview
+This application demonstrates the use of the Bosch [BME680](https://www.bosch-sensortec.com/bst/products/all_products/bme680) and [SGP30](https://www.sensirion.com/en/environmental-sensors/gas-sensors/multi-pixel-gas-sensors/) sensors delivering data to [AWS IoT Core Service](https://aws.amazon.com/iot-core/features/).
 
-This is an empty app, serves as a skeleton for building Mongoose OS
-apps from scratch.
+# license
 
-## How to install this app
 
-- Install and start [mos tool](https://mongoose-os.com/software.html)
-- Switch to the Project page, find and import this app, build and flash it:
 
-<p align="center">
-  <img src="https://mongoose-os.com/images/app1.gif" width="75%">
-</p>
